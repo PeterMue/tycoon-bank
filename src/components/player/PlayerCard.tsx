@@ -17,6 +17,7 @@ import { formatCurrency, formatCompact } from '../../utils/formatters';
 interface PlayerCardProps {
   player: Player;
   config: GameConfig;
+  disableRotation?: boolean;
   onInitiateTransfer: (player: Player) => void;
   onPassGo: (playerId: string) => void;
   onEdit: (player: Player) => void;
@@ -27,6 +28,7 @@ interface PlayerCardProps {
 export const PlayerCard: React.FC<PlayerCardProps> = ({
   player,
   config,
+  disableRotation = false,
   onInitiateTransfer,
   onPassGo,
   onEdit,
@@ -82,7 +84,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
     player.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 1000) % 9000 + 1000
   ).toString();
 
-  const isRotated = (player.rotation || 0) === 180;
+  const isRotated = !disableRotation && (player.rotation || 0) === 180;
 
   return (
     <div
@@ -202,17 +204,19 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
               <ArrowRightLeft className="w-3.5 h-3.5" />
             </button>
 
-            {/* Rotate Card Button (for opposite table player) */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onRotate(player.id);
-              }}
-              title={t.card.rotate}
-              className="p-1.5 rounded-lg text-xs font-semibold bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition active:scale-95"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
+            {/* Rotate Card Button (only shown in table view for opposite table player) */}
+            {!disableRotation && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRotate(player.id);
+                }}
+                title={t.card.rotate}
+                className="p-1.5 rounded-lg text-xs font-semibold bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition active:scale-95"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+            )}
 
             {/* Edit Player Button */}
             <button

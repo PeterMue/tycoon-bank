@@ -157,6 +157,7 @@ export const TableLayout: React.FC<TableLayoutProps> = ({
                   key={player.id}
                   player={player}
                   config={config}
+                  disableRotation={true}
                   onInitiateTransfer={onInitiateTransfer}
                   onPassGo={onPassGo}
                   onEdit={onEditPlayer}
