@@ -40,7 +40,6 @@ export const INITIAL_DEMO_PLAYERS: Player[] = [
     avatar: '🎩',
     cardTheme: 'gold',
     isBankrupt: false,
-    rotation: 180, // Facing opposite player across iPad table
     createdAt: 1,
   },
   {
@@ -50,7 +49,6 @@ export const INITIAL_DEMO_PLAYERS: Player[] = [
     avatar: '🏎️',
     cardTheme: 'obsidian',
     isBankrupt: false,
-    rotation: 180,
     createdAt: 2,
   },
   {
@@ -60,7 +58,6 @@ export const INITIAL_DEMO_PLAYERS: Player[] = [
     avatar: '🐈',
     cardTheme: 'sapphire',
     isBankrupt: false,
-    rotation: 0,
     createdAt: 3,
   },
   {
@@ -70,7 +67,6 @@ export const INITIAL_DEMO_PLAYERS: Player[] = [
     avatar: '👑',
     cardTheme: 'emerald',
     isBankrupt: false,
-    rotation: 0,
     createdAt: 4,
   },
 ];
@@ -134,7 +130,7 @@ export function useGameStore() {
         avatar: avatar || '🎩',
         cardTheme: cardTheme || 'gold',
         isBankrupt: false,
-        rotation: 0,
+        isFlipped: false,
         createdAt: Date.now(),
       };
 
@@ -164,7 +160,7 @@ export function useGameStore() {
     setState((prev) => ({
       ...prev,
       players: prev.players.map((p) =>
-        p.id === id ? { ...p, rotation: (p.rotation || 0) === 180 ? 0 : 180 } : p
+        p.id === id ? { ...p, isFlipped: !p.isFlipped } : p
       ),
     }));
   }, []);

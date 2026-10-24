@@ -27,7 +27,8 @@ export interface Player {
   avatar: string;
   cardTheme: CardThemeId;
   isBankrupt: boolean;
-  rotation?: number; // 0 or 180 for tablet table seating
+  rotation?: number; // legacy support
+  isFlipped?: boolean; // manually flipped relative to table slot
   createdAt: number;
 }
 

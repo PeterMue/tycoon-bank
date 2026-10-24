@@ -17,6 +17,7 @@ import { formatCurrency, formatCompact } from '../../utils/formatters';
 interface PlayerCardProps {
   player: Player;
   config: GameConfig;
+  isTopSlot?: boolean;
   disableRotation?: boolean;
   onInitiateTransfer: (player: Player) => void;
   onPassGo: (playerId: string) => void;
@@ -28,6 +29,7 @@ interface PlayerCardProps {
 export const PlayerCard: React.FC<PlayerCardProps> = ({
   player,
   config,
+  isTopSlot = false,
   disableRotation = false,
   onInitiateTransfer,
   onPassGo,
@@ -84,7 +86,12 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
     player.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 1000) % 9000 + 1000
   ).toString();
 
-  const isRotated = !disableRotation && (player.rotation || 0) === 180;
+  // Base orientation: top table slots face 180° (opposite player), bottom slots face 0°
+  let effectiveRotation = isTopSlot ? 180 : 0;
+  if (player.isFlipped) {
+    effectiveRotation = effectiveRotation === 180 ? 0 : 180;
+  }
+  const isRotated = !disableRotation && effectiveRotation === 180;
 
   return (
     <div
