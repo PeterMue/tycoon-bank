@@ -1,13 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   DndContext,
   DragEndEvent,
-  PointerSensor,
+  DragStartEvent,
+  MouseSensor,
   TouchSensor,
   useSensor,
   useSensors,
+  DragOverlay,
 } from '@dnd-kit/core';
-import { Player, GameConfig } from '../../types/game';
+import { Player, GameConfig, BANK_ID } from '../../types/game';
 import { BankVault } from '../bank/BankVault';
 import { PlayerCard } from '../player/PlayerCard';
 import { playCardTap, triggerHaptic } from '../../utils/sound';
@@ -41,28 +43,32 @@ export const TableLayout: React.FC<TableLayoutProps> = ({
   onVaultDeposit,
   onDragDropTransfer,
 }) => {
-  // Touch & Pointer sensors configured with activation constraints
-  // to avoid interfering with taps or subtle scroll gestures on iPads
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 150,
-        tolerance: 8,
-      },
-    })
-  );
+  const [activeId, setActiveId] = useState<string | null>(null);
 
-  const handleDragStart = () => {
+  // Dedicated sensors: Mouse for desktop/trackpad, Touch for iPad/mobile
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 8,
+    },
+  });
+
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 100, // 100ms hold ensures intentional drag vs tap
+      tolerance: 6,
+    },
+  });
+
+  const sensors = useSensors(mouseSensor, touchSensor);
+
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveId(event.active.id as string);
     if (config.soundEnabled) playCardTap();
     if (config.hapticEnabled) triggerHaptic('light');
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
+    setActiveId(null);
     const { active, over } = event;
     if (!over) return;
 
@@ -73,6 +79,10 @@ export const TableLayout: React.FC<TableLayoutProps> = ({
       if (config.hapticEnabled) triggerHaptic('medium');
       onDragDropTransfer(sourceId, targetId);
     }
+  };
+
+  const handleDragCancel = () => {
+    setActiveId(null);
   };
 
   // Split players for tabletop seating (top side vs bottom side)
@@ -87,11 +97,16 @@ export const TableLayout: React.FC<TableLayoutProps> = ({
     };
   }, [players]);
 
+  const activePlayer = useMemo(() => {
+    return players.find((p) => p.id === activeId);
+  }, [players, activeId]);
+
   return (
     <DndContext
       sensors={sensors}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      onDragCancel={handleDragCancel}
     >
       <main className="w-full flex-1 flex flex-col items-center justify-center p-3 sm:p-6 max-w-7xl mx-auto">
         {viewMode === 'table' ? (
@@ -171,6 +186,34 @@ export const TableLayout: React.FC<TableLayoutProps> = ({
           </div>
         )}
       </main>
+
+      {/* Floating Drag Overlay for smooth iPad touch dragging */}
+      <DragOverlay dropAnimation={null}>
+        {activePlayer ? (
+          <div className="rotate-3 scale-105 pointer-events-none drop-shadow-2xl">
+            <PlayerCard
+              player={activePlayer}
+              config={config}
+              disableRotation={viewMode === 'grid'}
+              isTopSlot={topPlayers.some((p) => p.id === activePlayer.id)}
+              onInitiateTransfer={() => {}}
+              onPassGo={() => {}}
+              onEdit={() => {}}
+              onRotate={() => {}}
+              onToggleBankrupt={() => {}}
+            />
+          </div>
+        ) : activeId === BANK_ID ? (
+          <div className="scale-105 pointer-events-none drop-shadow-2xl">
+            <BankVault
+              config={config}
+              circulatingSupply={circulatingSupply}
+              onInitiatePayout={() => {}}
+              onInitiateDeposit={() => {}}
+            />
+          </div>
+        ) : null}
+      </DragOverlay>
     </DndContext>
   );
 };

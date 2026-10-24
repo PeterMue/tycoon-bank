@@ -104,7 +104,8 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
       <div
         {...attributes}
         {...listeners}
-        className={`credit-card cursor-grab active:cursor-grabbing relative w-72 sm:w-80 h-44 sm:h-48 rounded-2xl p-4 flex flex-col justify-between overflow-hidden shadow-xl border ${
+        style={{ touchAction: 'none' }}
+        className={`credit-card touch-none cursor-grab active:cursor-grabbing relative w-72 sm:w-80 h-44 sm:h-48 rounded-2xl p-4 flex flex-col justify-between overflow-hidden shadow-xl border ${
           theme.borderColor
         } bg-gradient-to-br ${theme.bgGradient} ${
           isOver
@@ -160,6 +161,8 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
                 e.stopPropagation();
                 onToggleBankrupt(player.id);
               }}
+              onPointerDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
               className="inline-flex items-center gap-1 text-[10px] font-bold text-rose-400 bg-rose-950/80 px-2 py-0.5 rounded border border-rose-500/40 hover:bg-rose-900 transition"
               title={t.card.revive}
             >
@@ -173,6 +176,8 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
                   e.stopPropagation();
                   onToggleBankrupt(player.id);
                 }}
+                onPointerDown={(e) => e.stopPropagation()}
+                onTouchStart={(e) => e.stopPropagation()}
                 className="inline-flex items-center gap-1 text-[9px] font-bold text-rose-400 hover:underline"
               >
                 <span>{t.card.declareBankruptcy}</span>
@@ -186,6 +191,8 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
           {/* Pass GO / Über Los button */}
           <button
             onClick={handlePassGoClick}
+            onPointerDown={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
             disabled={player.isBankrupt}
             title={`${t.card.passGo} (+${formatCompact(config.passGoAmount, locale)})`}
             className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 shadow-md shadow-amber-500/20 active:scale-95 transition disabled:opacity-50"
@@ -204,6 +211,8 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
                 e.stopPropagation();
                 onInitiateTransfer(player);
               }}
+              onPointerDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
               disabled={player.isBankrupt}
               title={t.card.transfer}
               className="p-1.5 rounded-lg text-xs font-semibold bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition active:scale-95 disabled:opacity-50"
@@ -218,6 +227,8 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
                   e.stopPropagation();
                   onRotate(player.id);
                 }}
+                onPointerDown={(e) => e.stopPropagation()}
+                onTouchStart={(e) => e.stopPropagation()}
                 title={t.card.rotate}
                 className="p-1.5 rounded-lg text-xs font-semibold bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition active:scale-95"
               >
@@ -231,6 +242,8 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
                 e.stopPropagation();
                 onEdit(player);
               }}
+              onPointerDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
               title={t.card.edit}
               className="p-1.5 rounded-lg text-xs font-semibold bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition active:scale-95"
             >

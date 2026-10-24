@@ -49,7 +49,8 @@ export const BankVault: React.FC<BankVaultProps> = ({
         ref={setCombinedRef}
         {...attributes}
         {...listeners}
-        className={`relative group cursor-grab active:cursor-grabbing w-52 sm:w-60 h-52 sm:h-60 rounded-full flex flex-col items-center justify-center text-center p-4 transition-all duration-300 shadow-2xl ${
+        style={{ touchAction: 'none' }}
+        className={`relative group cursor-grab active:cursor-grabbing touch-none w-52 sm:w-60 h-52 sm:h-60 rounded-full flex flex-col items-center justify-center text-center p-4 transition-all duration-300 shadow-2xl ${
           isOver
             ? 'ring-4 ring-amber-400 bg-amber-950/70 scale-105 shadow-amber-500/50'
             : isDragging
@@ -94,6 +95,8 @@ export const BankVault: React.FC<BankVaultProps> = ({
       <div className="mt-9 flex items-center gap-2">
         <button
           onClick={onInitiatePayout}
+          onPointerDown={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
           className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 transition active:scale-95 shadow-sm"
         >
           <ArrowUpRight className="w-3.5 h-3.5" />
@@ -102,6 +105,8 @@ export const BankVault: React.FC<BankVaultProps> = ({
 
         <button
           onClick={onInitiateDeposit}
+          onPointerDown={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
           className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 transition active:scale-95 shadow-sm"
         >
           <ArrowDownLeft className="w-3.5 h-3.5" />
