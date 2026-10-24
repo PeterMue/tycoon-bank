@@ -1,0 +1,83 @@
+import { CardTheme, CardThemeId } from '../types/game';
+
+export const CARD_THEMES: Record<CardThemeId, CardTheme> = {
+  obsidian: {
+    id: 'obsidian',
+    name: 'Obsidian Black',
+    bgGradient: 'from-slate-900 via-zinc-900 to-black',
+    borderColor: 'border-zinc-700/60',
+    textColor: 'text-zinc-100',
+    accentColor: 'text-amber-400',
+  },
+  gold: {
+    id: 'gold',
+    name: 'Royal Gold',
+    bgGradient: 'from-amber-900/90 via-amber-700 to-yellow-600',
+    borderColor: 'border-amber-400/80',
+    textColor: 'text-amber-50',
+    accentColor: 'text-yellow-200',
+  },
+  sapphire: {
+    id: 'sapphire',
+    name: 'Deep Sapphire',
+    bgGradient: 'from-blue-950 via-indigo-900 to-sky-900',
+    borderColor: 'border-cyan-400/60',
+    textColor: 'text-cyan-50',
+    accentColor: 'text-cyan-300',
+  },
+  emerald: {
+    id: 'emerald',
+    name: 'Emerald Mint',
+    bgGradient: 'from-emerald-950 via-teal-900 to-emerald-800',
+    borderColor: 'border-emerald-400/60',
+    textColor: 'text-emerald-50',
+    accentColor: 'text-emerald-300',
+  },
+  ruby: {
+    id: 'ruby',
+    name: 'Ruby Velvet',
+    bgGradient: 'from-rose-950 via-red-900 to-pink-900',
+    borderColor: 'border-rose-400/60',
+    textColor: 'text-rose-50',
+    accentColor: 'text-rose-300',
+  },
+  amethyst: {
+    id: 'amethyst',
+    name: 'Amethyst Purple',
+    bgGradient: 'from-purple-950 via-violet-900 to-fuchsia-900',
+    borderColor: 'border-fuchsia-400/60',
+    textColor: 'text-fuchsia-50',
+    accentColor: 'text-fuchsia-300',
+  },
+  cyberpunk: {
+    id: 'cyberpunk',
+    name: 'Neon Cyber',
+    bgGradient: 'from-slate-950 via-purple-950 to-cyan-950',
+    borderColor: 'border-pink-500/80',
+    textColor: 'text-slate-50',
+    accentColor: 'text-pink-400',
+  },
+  titanium: {
+    id: 'titanium',
+    name: 'Titanium Platinum',
+    bgGradient: 'from-slate-800 via-zinc-700 to-slate-900',
+    borderColor: 'border-slate-300/60',
+    textColor: 'text-slate-100',
+    accentColor: 'text-sky-300',
+  },
+};
+
+export const PRESET_AVATARS: { id: string; label: string; icon: string }[] = [
+  { id: 'tophat', label: 'Top Hat', icon: '🎩' },
+  { id: 'dog', label: 'Scottie Dog', icon: '🐕' },
+  { id: 'car', label: 'Race Car', icon: '🏎️' },
+  { id: 'cat', label: 'Cat', icon: '🐈' },
+  { id: 'ship', label: 'Battleship', icon: '🚢' },
+  { id: 'crown', label: 'Crown', icon: '👑' },
+  { id: 'thimble', label: 'Thimble', icon: '🪙' },
+  { id: 'train', label: 'Locomotive', icon: '🚂' },
+  { id: 'diamond', label: 'Diamond', icon: '💎' },
+  { id: 'lion', label: 'Lion', icon: '🦁' },
+  { id: 'dragon', label: 'Dragon', icon: '🐉' },
+  { id: 'rocket', label: 'Rocket', icon: '🚀' },
+];
